@@ -1,11 +1,8 @@
 'use client';
 
-import React, { useState, useRef, useId } from 'react';
+import React, { useState, useEffect, useRef, useId } from 'react';
 import Link from 'next/link';
 import { QRCodeCanvas } from 'qrcode.react';
-
-// Domain configuration
-const DEFAULT_BASE_DOMAIN = 'https://coincashy.io';
 
 const PRESET_EVENTS = [
   'Delhi Web3 Meetup',
@@ -20,9 +17,16 @@ const PRESET_EVENTS = [
 export default function AdminQrPage() {
   const [eventName, setEventName] = useState<string>('Delhi Web3 Meetup');
   const [source, setSource] = useState<string>('qr');
-  const [baseDomain, setBaseDomain] = useState<string>(DEFAULT_BASE_DOMAIN);
+  const [baseDomain, setBaseDomain] = useState<string>('https://coincashy.io');
   const [copied, setCopied] = useState<boolean>(false);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
+
+  // Automatically detect the current live origin (e.g. https://coincashyqr.vercel.app or http://localhost:3000)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.origin) {
+      setBaseDomain(window.location.origin);
+    }
+  }, []);
 
   const qrContainerRef = useRef<HTMLDivElement>(null);
   const eventInputId = useId();
@@ -33,7 +37,10 @@ export default function AdminQrPage() {
   const computeUrl = (event: string, src: string, domain: string) => {
     const cleanEvent = event.trim() || 'Coincashy Event';
     const cleanSource = src.trim() || 'qr';
-    const cleanDomain = domain.trim().replace(/\/$/, '') || DEFAULT_BASE_DOMAIN;
+    let cleanDomain = domain.trim().replace(/\/$/, '');
+    if (!cleanDomain.startsWith('http://') && !cleanDomain.startsWith('https://')) {
+      cleanDomain = `https://${cleanDomain}`;
+    }
     return `${cleanDomain}/lead?event=${encodeURIComponent(cleanEvent)}&source=${encodeURIComponent(cleanSource)}`;
   };
 
@@ -84,7 +91,8 @@ export default function AdminQrPage() {
         // Subtitle / domain URL
         ctx.fillStyle = '#0000FF';
         ctx.font = '600 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-        ctx.fillText('Scan to connect · coincashy.io', exportSize / 2, exportSize - 65);
+        const displayDomain = baseDomain.replace(/^https?:\/\//, '').replace(/\/$/, '');
+        ctx.fillText(`Scan to connect · ${displayDomain}`, exportSize / 2, exportSize - 65);
 
         const pngUrl = exportCanvas.toDataURL('image/png');
         const safeSlug = (eventName.trim() || 'event')
@@ -237,7 +245,7 @@ export default function AdminQrPage() {
           {/* Quick Actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <Link
-              href={`/lead?event=${encodeURIComponent(eventName)}&source=${encodeURIComponent(source)}`}
+              href={activeQrUrl}
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -524,26 +532,44 @@ export default function AdminQrPage() {
                   </div>
 
                   <div>
-                    <label
-                      htmlFor={domainInputId}
-                      style={{
-                        display: 'block',
-                        fontSize: '11px',
-                        fontWeight: 700,
-                        color: 'var(--fg-dim, rgba(255, 255, 255, 0.66))',
-                        letterSpacing: '0.05em',
-                        textTransform: 'uppercase',
-                        marginBottom: '6px',
-                      }}
-                    >
-                      Target Domain
-                    </label>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                      <label
+                        htmlFor={domainInputId}
+                        style={{
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          color: 'var(--fg-dim, rgba(255, 255, 255, 0.66))',
+                          letterSpacing: '0.05em',
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        Target Domain
+                      </label>
+                      {/* One-click quick toggle if running on Vercel */}
+                      {typeof window !== 'undefined' && window.location.origin && baseDomain !== window.location.origin && (
+                        <button
+                          type="button"
+                          onClick={() => setBaseDomain(window.location.origin)}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            padding: 0,
+                            cursor: 'pointer',
+                            fontSize: '10px',
+                            color: '#10B981',
+                            textDecoration: 'underline',
+                          }}
+                        >
+                          Use Current Host
+                        </button>
+                      )}
+                    </div>
                     <input
                       id={domainInputId}
                       type="text"
                       value={baseDomain}
                       onChange={(e) => setBaseDomain(e.target.value)}
-                      placeholder="https://coincashy.io"
+                      placeholder="https://coincashyqr.vercel.app"
                       style={{
                         width: '100%',
                         boxSizing: 'border-box',
@@ -563,9 +589,10 @@ export default function AdminQrPage() {
                         color: 'var(--fg-faint, rgba(255, 255, 255, 0.46))',
                         marginTop: '4px',
                         display: 'block',
+                        wordBreak: 'break-all',
                       }}
                     >
-                      Live: <code style={{ color: '#10B981' }}>coincashy.io</code>
+                      Active: <code style={{ color: '#10B981' }}>{baseDomain}</code>
                     </span>
                   </div>
                 </div>
