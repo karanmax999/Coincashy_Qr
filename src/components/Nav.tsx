@@ -1,6 +1,7 @@
 "use client";
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import React, { useState, useEffect } from 'react';
 
@@ -11,6 +12,7 @@ declare global {
 }
 
 export default function Nav() {
+  const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isTickerOpen, setIsTickerOpen] = useState(true);
@@ -46,6 +48,11 @@ export default function Nav() {
       }
     }
   }, []);
+
+  // Hide the global marketing nav on auth and internal dashboard pages
+  if (pathname && (pathname.startsWith('/auth') || pathname.startsWith('/dashboard'))) {
+    return null;
+  }
 
   const toggleMobile = () => setIsMobileOpen(!isMobileOpen);
   const closeMobile = () => setIsMobileOpen(false);
@@ -182,9 +189,9 @@ export default function Nav() {
             </div>
           </nav>
           <div className="nav-actions">
-            <a className="nav-link nav-signin" href="https://trade.coincashy.io/auth/login" target="_blank" rel="noopener">Log in</a>
+            <Link className="nav-link nav-signin" href="/auth/login">Log in</Link>
             <Link className="btn btn-line btn-sm nav-contact" href="/contact">Talk to sales</Link>
-            <a className="btn btn-solid btn-sm" id="nav-cta" href="https://trade.coincashy.io/auth/signup" target="_blank" rel="noopener"><span className="l-long">Get started</span><span className="l-short">Get started</span></a>
+            <Link className="btn btn-solid btn-sm" id="nav-cta" href="/auth/signup"><span className="l-long">Get started</span><span className="l-short">Get started</span></Link>
             <button className="theme-btn" type="button" data-theme-toggle aria-label="Switch to light mode" title="Switch theme" onClick={() => { if (typeof window !== 'undefined' && window.__toggleTheme) window.__toggleTheme(); }}><svg className="ic ic-sun" aria-hidden="true"><use href="#i-sun" /></svg><svg className="ic ic-moon" aria-hidden="true"><use href="#i-moon" /></svg></button>
             <button className="burger" id="burger" type="button" aria-label={isMobileOpen ? 'Close menu' : 'Open menu'} aria-expanded={isMobileOpen} aria-controls="mnav" onClick={toggleMobile}><span /><span /></button>
           </div>
@@ -244,7 +251,7 @@ export default function Nav() {
           </details>
           <div className="m-cta">
             <Link className="btn btn-solid" href="/personal">Buy crypto</Link>
-            <a className="btn btn-solid" href="https://trade.coincashy.io/auth/login" target="_blank" rel="noopener">Login</a>
+            <Link className="btn btn-solid" href="/auth/login">Login</Link>
             <Link className="btn btn-line" href="/contact">Talk to our team</Link>
             <button className="btn btn-line" type="button" data-theme-toggle onClick={() => { if (typeof window !== 'undefined' && window.__toggleTheme) window.__toggleTheme(); }}>
               <svg className="ic ic-sun" aria-hidden="true"><use href="#i-sun" /></svg>

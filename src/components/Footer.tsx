@@ -28,7 +28,7 @@ export default function Footer() {
             <div className="f-col"><h4>Solutions</h4><Link href="/personal">Individuals</Link><Link href="/processing">Merchants &amp; PSPs</Link><Link href="/otc">OTC desks &amp; brokers</Link><Link href="/business">Fintechs &amp; platforms</Link><Link href="/settlement">Treasury &amp; accounts</Link></div>
             <div className="f-col"><h4>Developers</h4><Link href="/developers#00">API overview</Link><Link href="/developers#04">Payments API</Link><Link href="/developers#07">Wallet API</Link><Link href="/developers#05">Quotes API</Link><Link href="/developers#06">Webhooks</Link></div>
             <div className="f-col"><h4>Resources</h4><Link href="/personal#how">How it works</Link><Link href="/blog">Blog</Link><Link href="/help">Help center</Link><Link href="/fees">Fees &amp; limits</Link><Link href="/status">System status</Link><Link href="/help">FAQ</Link></div>
-            <div className="f-col"><h4>Company</h4><Link href="/about">About Coincashy</Link><Link href="/compliance">Compliance</Link><Link href="/careers">Careers</Link><Link href="/contact">Contact</Link><a href="https://trade.coincashy.io/auth/login" target="_blank" rel="noopener">Log in</a><a href="https://trade.coincashy.io/auth/signup" target="_blank" rel="noopener">Get started</a></div>
+            <div className="f-col"><h4>Company</h4><Link href="/about">About Coincashy</Link><Link href="/compliance">Compliance</Link><Link href="/careers">Careers</Link><Link href="/contact">Contact</Link><Link href="/auth/login">Log in</Link><Link href="/auth/signup">Get started</Link></div>
           </div>
         </div>
         <div className="f-mid">

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 /* Layout: vault-and-paper ledger. Full-bleed bands alternate a blue-black vault ground with pale cool paper; left-aligned geometric sans headlines on a wide measure; one engraved guilloche rosette is the signature, echoed in the card's security print. */
 /* Söhne (Klim Type Foundry) is a licensed typeface. Once Coincashy holds a web licence, drop the files into
    fonts/ and uncomment these four rules; the stack below picks Söhne up automatically and falls back to Inter.
@@ -15,7 +15,7 @@
   --chalk:#F2F2F2;--ink:#000000;
   --jade:#0000FF;--jade-ink:#0000FF;
   --jade-text-d:#6B6BFF;
-  --brass:#E2B866;--brass-ink:#8A6414;
+  --brass:#E2B866;--brass-ink:#8A6414;--gold:#E2B866;--gold-ink:#946E1E;--gold-dim:rgba(226,184,102,0.15);--gold-glow:rgba(226,184,102,0.25);
   --coral:#F29A88;--coral-ink:#B23A26;
   --white:#FFFFFF;--black:#000000;
   --line-d:rgba(255,255,255,.1);--line-d-2:rgba(255,255,255,.22);
@@ -37,8 +37,9 @@
   --coin-btc:#E3913A;--coin-eth:#6F7FD0;--coin-sol:#9945FF;--coin-usdt:#27A17F;--coin-usdc:#3A78D0;
   --code-bg:#050505;--code-key:#C4C4C4;
   /* type */
-  --f-display:"Söhne","Inter","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
-  --f-body:"Söhne","Inter","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+  --f-serif:'Instrument Serif',Georgia,serif;
+  --f-display:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --f-body:'Inter','Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   --f-label:var(--f-body);
   --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   --t-hero:clamp(2rem,5.6vw,5.2rem);
@@ -52,10 +53,10 @@
   --ease:cubic-bezier(.2,.7,.2,1);
   /* contextual tokens: dark theme by default, remapped by :root[data-theme="light"] below */
   --fg:var(--chalk);--fg-dim:var(--dim-d);--fg-faint:var(--faint-d);
-  --hi:var(--accent-text);--low:var(--fg-dim);
+  --hi:#FFFFFF;--low:var(--fg-dim);
   --line:var(--line-d);--line-2:var(--line-d-2);
   --surface:var(--vault-2);--surface-2:var(--vault-3);--ground:var(--vault);
-  --accent:var(--jade);--accent-text:var(--jade-text-d);--ok:var(--jade-text-d);--pending:var(--brass);--bad:var(--coral);
+  --accent:var(--jade);--accent-text:#FFFFFF;--ok:var(--jade-text-d);--pending:var(--brass);--bad:var(--coral);
   --btn-bg:var(--chalk);--btn-fg:var(--vault);
   --shadow:var(--shadow-d);--glass:var(--glass-d);
   --flow-ink:255,255,255;--flow-accent:0,0,255;--flow-warm:226,184,102;--sonar-base:.42;
@@ -65,7 +66,7 @@
 :root[data-theme="light"]{
   color-scheme:light;
   --fg:var(--ink);--fg-dim:var(--dim-p);--fg-faint:var(--faint-p);
-  --hi:var(--accent-text);--low:var(--fg-dim);
+  --hi:#0A0D14;--low:var(--fg-dim);
   --line:var(--line-p);--line-2:var(--line-p-2);
   --surface:var(--paper-2);--surface-2:var(--white);--ground:var(--paper);
   --accent:var(--jade-ink);--accent-text:var(--jade-ink);--ok:var(--jade-ink);--pending:var(--brass-ink);--bad:var(--coral-ink);
@@ -75,7 +76,7 @@
   --grain:url("data:image/svg+xml,%3Csvg viewBox='0 0 2 2' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1' height='1' fill='%23000'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23000'/%3E%3C/svg%3E");
 }
 /* a component that stays dark in both themes (product panels) */
-.scope-dark{--fg:var(--chalk);--fg-dim:var(--dim-d);--fg-faint:var(--faint-d);--line:var(--line-d);--line-2:var(--line-d-2);--surface:var(--vault-2);--surface-2:var(--vault-3);--ground:var(--vault);--accent:var(--jade);--accent-text:var(--jade-text-d);--ok:var(--jade-text-d);--pending:var(--brass);--bad:var(--coral);--btn-bg:var(--chalk);--btn-fg:var(--vault);--shadow:var(--shadow-d);--glass:var(--glass-d);color:var(--chalk)}
+.scope-dark{--fg:var(--chalk);--fg-dim:var(--dim-d);--fg-faint:var(--faint-d);--hi:#FFFFFF;--low:var(--fg-dim);--line:var(--line-d);--line-2:var(--line-d-2);--surface:var(--vault-2);--surface-2:var(--vault-3);--ground:var(--vault);--accent:var(--jade);--accent-text:#FFFFFF;--ok:var(--jade-text-d);--pending:var(--brass);--bad:var(--coral);--btn-bg:var(--chalk);--btn-fg:var(--vault);--shadow:var(--shadow-d);--glass:var(--glass-d);color:var(--chalk)}
 
 /* ============ Marquee ============ */
 .marquee {
@@ -1510,3 +1511,66 @@ textarea.input{height:auto;min-height:110px;padding:14px 16px;resize:vertical;li
   }
 }
 
+
+
+/* ============ Ether.fi Style Typography ============ */
+.font-serif-luxury {
+  font-family: var(--f-serif), Georgia, serif;
+  letter-spacing: -0.01em;
+}
+.ether-title {
+  font-family: var(--f-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold, #E2B866);
+  letter-spacing: -0.015em;
+}
+.ether-title-white {
+  font-family: var(--f-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #FFFFFF;
+  letter-spacing: -0.015em;
+}
+.num-tabular {
+  font-feature-settings: "tnum" 1, "cv05" 1;
+}
+
+
+/* ============ Responsive Display Classes ============ */
+.desktop-only { display: flex !important; }
+.mobile-only { display: none !important; }
+.desktop-block { display: block !important; }
+.mobile-block { display: none !important; }
+.desktop-inline { display: inline-flex !important; }
+.mobile-inline { display: none !important; }
+
+@media (max-width: 1023px) {
+  .desktop-only { display: none !important; }
+  .mobile-only { display: flex !important; }
+  .desktop-block { display: none !important; }
+  .mobile-block { display: block !important; }
+  .desktop-inline { display: none !important; }
+  .mobile-inline { display: inline-flex !important; }
+}
+
+.desktop-table-view { display: block; }
+.mobile-cards-view { display: none; }
+
+@media (max-width: 767px) {
+  .desktop-table-view { display: none !important; }
+  .mobile-cards-view { display: flex !important; }
+}
+
+@media (min-width: 768px) {
+  .desktop-table-view { display: block !important; }
+  .mobile-cards-view { display: none !important; }
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

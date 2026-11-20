@@ -1,0 +1,15 @@
+{
+  "slug": "pipeline-test-do-not-publish",
+  "title": "Pipeline Test – Do Not Publish",
+  "description": "Internal test article used to verify the Coincashy blog automation pipeline end to end. It is marked as draft and never appears on the website.",
+  "excerpt": "Internal pipeline test. Not shown on the site.",
+  "date": "2026-11-20",
+  "author": "Coincashy Editorial Team",
+  "reviewer": "Karan Bansal",
+  "category": "Guides",
+  "tags": [
+    "test"
+  ],
+  "html": "<p>This is an internal test of the blog automation pipeline.</p>",
+  "status": "draft"
+}
