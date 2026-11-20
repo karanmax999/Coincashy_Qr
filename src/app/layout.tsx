@@ -3,6 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://coincashy.io"),
   title: "Coincashy",
   description: "Coincashy connects people and businesses to crypto, stablecoins, fiat rails, wallets, cards and payment infrastructure.",
   icons: {
