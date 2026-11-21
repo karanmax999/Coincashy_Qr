@@ -35,6 +35,8 @@ export default async function CategoryPage({ params }: Props) {
       <div className="wrap blog-wrap">
         <header className="blog-head">
           <nav className="blog-crumbs" aria-label="Breadcrumb">
+            <Link href="/">Home</Link>
+            <span className="blog-crumbs-sep" aria-hidden="true">/</span>
             <Link href="/blog">Blog</Link>
             <span className="blog-crumbs-sep" aria-hidden="true">/</span>
             <span aria-current="page">{cat.name}</span>

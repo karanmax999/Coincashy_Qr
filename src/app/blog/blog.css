@@ -26,7 +26,7 @@
 /* --- Base & Page Containers --- */
 .blog-main {
   position: relative;
-  padding-top: clamp(6.5rem, 13vw, 9.5rem);
+  padding-top: calc(env(safe-area-inset-top, 0px) + clamp(135px, 14vw, 170px));
   padding-bottom: clamp(4rem, 8vw, 7rem);
   color: var(--chalk, #F2F2F2);
   min-height: 100vh;
@@ -1132,7 +1132,7 @@
 /* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
   .blog-main {
-    padding-top: 5.5rem;
+    padding-top: calc(env(safe-area-inset-top, 0px) + 145px);
   }
   .blog-grid {
     grid-template-columns: 1fr;
@@ -1151,6 +1151,12 @@
   }
   .blog-cta .btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-main {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 155px);
   }
 }
 
