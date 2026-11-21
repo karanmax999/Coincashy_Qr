@@ -34,7 +34,20 @@ so a broken article can never reach production.
 | `faq` | `{q,a}[]` | | rendered on the page and as FAQ structured data |
 | `sources` | `{name,url}[]` | | rendered as a "Sources" list |
 | `cta` | `{label,href}` | | call to action, e.g. `{"label":"Buy crypto","href":"/buy-crypto"}` |
+| `cover` | `object` | | Optional article cover: `{"src":"/blog/<slug>/cover.webp","alt":"...","width":1600,"height":900,"generated":true,"credit":"optional"}` |
 | `status` | `"published"` \| `"draft"` | ✅ | drafts never appear on the site |
+
+## Cover Image Rules
+When providing an optional `cover` image in `content/blog/<slug>.json`:
+- **Dimensions & Ratio:** Strict 16:9 aspect ratio, exact resolution `1600x900` px.
+- **Format & Compression:** Modern WebP format (`.webp`), file size < 300 KB.
+- **Location:** Saved in `/public/blog/<slug>/cover.webp` (src starts with `/blog/<slug>/`).
+- **Content Policy:** Abstract, geometric, architectural, or technical visuals.
+  - ❌ **No company logos or crypto tokens as central graphic**
+  - ❌ **No human faces or portraits**
+  - ❌ **No visible typography, titles, or text overlays**
+  - ❌ **No price charts, candlestick patterns, or ticker screens**
+- **Fallback:** If `cover` is omitted, the blog template automatically renders a branded pure CSS 16:9 fallback matching the brand design system and category colors with zero layout shift.
 
 ## What the blog template adds automatically
 - Page title, meta description, canonical URL, Open Graph/Twitter tags, `max-image-preview:large`

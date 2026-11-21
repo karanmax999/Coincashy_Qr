@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAllPosts, getCategories, categorySlug, formatDate, readingMinutes } from '@/lib/blog';
+import BlogCover from '@/components/blog/BlogCover';
 
 type Props = { params: Promise<{ category: string }> };
 
@@ -54,26 +55,29 @@ export default async function CategoryPage({ params }: Props) {
           {posts.map((p) => (
             <li key={p.slug} className="blog-card">
               <Link href={`/blog/${p.slug}`} className="blog-card-link">
-                <div className="blog-card-head">
-                  <span className="blog-card-cat">{p.category}</span>
-                  <span className="blog-card-readtime">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <circle cx="12" cy="12" r="10"/>
-                      <polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                    {readingMinutes(p)} min read
-                  </span>
-                </div>
-                <h2 className="blog-card-title">{p.title}</h2>
-                <p className="blog-card-excerpt">{p.excerpt}</p>
-                <div className="blog-card-foot">
-                  <span>{formatDate(p.date)}</span>
-                  <span className="blog-read-cta">
-                    Read
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M3 8h10M9 4l4 4-4 4" />
-                    </svg>
-                  </span>
+                <BlogCover post={p} variant="card" />
+                <div className="blog-card-body">
+                  <div className="blog-card-head">
+                    <span className="blog-card-cat">{p.category}</span>
+                    <span className="blog-card-readtime">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                      </svg>
+                      {readingMinutes(p)} min read
+                    </span>
+                  </div>
+                  <h2 className="blog-card-title">{p.title}</h2>
+                  <p className="blog-card-excerpt">{p.excerpt}</p>
+                  <div className="blog-card-foot">
+                    <span>{formatDate(p.date)}</span>
+                    <span className="blog-read-cta">
+                      Read
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M3 8h10M9 4l4 4-4 4" />
+                      </svg>
+                    </span>
+                  </div>
                 </div>
               </Link>
             </li>

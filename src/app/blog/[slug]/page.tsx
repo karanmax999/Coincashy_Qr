@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getAllPosts, getPost, formatDate, readingMinutes, categorySlug, SITE_URL } from '@/lib/blog';
 import BlogReadingProgress from '@/components/blog/BlogReadingProgress';
 import BlogShareBar from '@/components/blog/BlogShareBar';
+import BlogCover from '@/components/blog/BlogCover';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -19,6 +20,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getPost(slug);
   if (!post) return {};
   const url = `/blog/${post.slug}`;
+  const imageUrl = post.cover ? `${SITE_URL}${post.cover.src}` : `${SITE_URL}/blog/${post.slug}/opengraph-image`;
+
   return {
     title: `${post.title} | Coincashy Blog`,
     description: post.description,
@@ -34,8 +37,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       modifiedTime: post.updated ?? post.date,
       authors: [post.author],
       tags: post.tags,
+      images: [
+        {
+          url: imageUrl,
+          width: post.cover?.width ?? 1200,
+          height: post.cover?.height ?? 630,
+          alt: post.cover?.alt ?? post.title,
+        },
+      ],
     },
-    twitter: { card: 'summary_large_image', title: post.title, description: post.description },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.description,
+      images: [imageUrl],
+    },
     robots: { index: true, follow: true, 'max-image-preview': 'large' },
   };
 }
@@ -56,6 +72,8 @@ export default async function BlogPostPage({ params }: Props) {
     .map((w) => w[0].toUpperCase())
     .join('');
 
+  const coverImageUrl = post.cover ? `${SITE_URL}${post.cover.src}` : `${url}/opengraph-image`;
+
   const jsonLd: Record<string, unknown>[] = [
     {
       '@context': 'https://schema.org',
@@ -65,7 +83,7 @@ export default async function BlogPostPage({ params }: Props) {
       datePublished: post.date,
       dateModified: post.updated ?? post.date,
       mainEntityOfPage: url,
-      image: `${url}/opengraph-image`,
+      image: coverImageUrl,
       author: { '@type': 'Person', name: post.author },
       publisher: {
         '@type': 'Organization',
@@ -123,6 +141,11 @@ export default async function BlogPostPage({ params }: Props) {
 
           <h1 className="blog-h1">{post.title}</h1>
           <p className="blog-lede">{post.excerpt}</p>
+
+          {/* Hero Cover under the title/excerpt, above the author box */}
+          <div className="blog-hero-cover-wrap">
+            <BlogCover post={post} variant="hero" />
+          </div>
 
           {/* Author & Reviewer Metadata Bar */}
           <div className="blog-author-bar">
@@ -231,17 +254,20 @@ export default async function BlogPostPage({ params }: Props) {
               {related.map((r) => (
                 <div key={r.slug} className="blog-card">
                   <Link href={`/blog/${r.slug}`} className="blog-card-link">
-                    <span className="blog-card-cat">{r.category}</span>
-                    <h3 className="blog-card-title">{r.title}</h3>
-                    <p className="blog-card-excerpt">{r.excerpt}</p>
-                    <div className="blog-card-foot">
-                      <span>{formatDate(r.date)}</span>
-                      <span className="blog-read-cta">
-                        Read
-                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                          <path d="M3 8h10M9 4l4 4-4 4" />
-                        </svg>
-                      </span>
+                    <BlogCover post={r} variant="card" />
+                    <div className="blog-card-body">
+                      <span className="blog-card-cat">{r.category}</span>
+                      <h3 className="blog-card-title">{r.title}</h3>
+                      <p className="blog-card-excerpt">{r.excerpt}</p>
+                      <div className="blog-card-foot">
+                        <span>{formatDate(r.date)}</span>
+                        <span className="blog-read-cta">
+                          Read
+                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                            <path d="M3 8h10M9 4l4 4-4 4" />
+                          </svg>
+                        </span>
+                      </div>
                     </div>
                   </Link>
                 </div>

@@ -10,20 +10,25 @@ export function GET() {
   const posts = getAllPosts().slice(0, 50);
   const items = posts
     .map(
-      (p) => `
+      (p) => {
+        const coverEnclosure = p.cover
+          ? `\n      <enclosure url="${SITE_URL}${p.cover.src}" type="image/webp" length="0" />\n      <media:content url="${SITE_URL}${p.cover.src}" medium="image" type="image/webp" width="${p.cover.width}" height="${p.cover.height}" />`
+          : '';
+        return `
     <item>
       <title>${esc(p.title)}</title>
       <link>${SITE_URL}/blog/${p.slug}</link>
       <guid isPermaLink="true">${SITE_URL}/blog/${p.slug}</guid>
       <pubDate>${new Date(`${p.date}T06:00:00Z`).toUTCString()}</pubDate>
       <category>${esc(p.category)}</category>
-      <description>${esc(p.description)}</description>
-    </item>`,
+      <description>${esc(p.description)}</description>${coverEnclosure}
+    </item>`;
+      },
     )
     .join('');
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>Coincashy Blog</title>
     <link>${SITE_URL}/blog</link>

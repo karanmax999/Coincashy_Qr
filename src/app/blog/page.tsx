@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllPosts, getCategories, formatDate, readingMinutes } from '@/lib/blog';
+import BlogCover from '@/components/blog/BlogCover';
 
 export const metadata: Metadata = {
   title: 'Coincashy Blog – Guides on Stablecoins, Crypto Payments and Compliance',
@@ -58,29 +59,34 @@ export default function BlogIndex() {
             {featuredPost && (
               <section className="blog-featured" aria-label="Featured article">
                 <Link href={`/blog/${featuredPost.slug}`} className="blog-featured-link">
-                  <div className="blog-featured-badge">
-                    <span>Featured Guide · {featuredPost.category}</span>
+                  <div className="blog-featured-cover-pane">
+                    <BlogCover post={featuredPost} variant="card" />
                   </div>
-                  <h2 className="blog-featured-title">{featuredPost.title}</h2>
-                  <p className="blog-featured-excerpt">{featuredPost.excerpt}</p>
-                  <div className="blog-featured-foot">
-                    <div className="blog-featured-meta">
-                      <span>{formatDate(featuredPost.date)}</span>
-                      <span aria-hidden="true">·</span>
-                      <span>{readingMinutes(featuredPost)} min read</span>
-                      {featuredPost.author && (
-                        <>
-                          <span aria-hidden="true">·</span>
-                          <span>{featuredPost.author}</span>
-                        </>
-                      )}
+                  <div className="blog-featured-content">
+                    <div className="blog-featured-badge">
+                      <span>Featured Guide · {featuredPost.category}</span>
                     </div>
-                    <span className="blog-read-cta">
-                      Read full guide
-                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d="M3 8h10M9 4l4 4-4 4" />
-                      </svg>
-                    </span>
+                    <h2 className="blog-featured-title">{featuredPost.title}</h2>
+                    <p className="blog-featured-excerpt">{featuredPost.excerpt}</p>
+                    <div className="blog-featured-foot">
+                      <div className="blog-featured-meta">
+                        <span>{formatDate(featuredPost.date)}</span>
+                        <span aria-hidden="true">·</span>
+                        <span>{readingMinutes(featuredPost)} min read</span>
+                        {featuredPost.author && (
+                          <>
+                            <span aria-hidden="true">·</span>
+                            <span>{featuredPost.author}</span>
+                          </>
+                        )}
+                      </div>
+                      <span className="blog-read-cta">
+                        Read full guide
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <path d="M3 8h10M9 4l4 4-4 4" />
+                        </svg>
+                      </span>
+                    </div>
                   </div>
                 </Link>
               </section>
@@ -92,26 +98,29 @@ export default function BlogIndex() {
                 {gridPosts.map((p) => (
                   <li key={p.slug} className="blog-card">
                     <Link href={`/blog/${p.slug}`} className="blog-card-link">
-                      <div className="blog-card-head">
-                        <span className="blog-card-cat">{p.category}</span>
-                        <span className="blog-card-readtime">
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                            <circle cx="12" cy="12" r="10"/>
-                            <polyline points="12 6 12 12 16 14"/>
-                          </svg>
-                          {readingMinutes(p)} min read
-                        </span>
-                      </div>
-                      <h3 className="blog-card-title">{p.title}</h3>
-                      <p className="blog-card-excerpt">{p.excerpt}</p>
-                      <div className="blog-card-foot">
-                        <span>{formatDate(p.date)}</span>
-                        <span className="blog-read-cta">
-                          Read
-                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                            <path d="M3 8h10M9 4l4 4-4 4" />
-                          </svg>
-                        </span>
+                      <BlogCover post={p} variant="card" />
+                      <div className="blog-card-body">
+                        <div className="blog-card-head">
+                          <span className="blog-card-cat">{p.category}</span>
+                          <span className="blog-card-readtime">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                              <circle cx="12" cy="12" r="10"/>
+                              <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            {readingMinutes(p)} min read
+                          </span>
+                        </div>
+                        <h3 className="blog-card-title">{p.title}</h3>
+                        <p className="blog-card-excerpt">{p.excerpt}</p>
+                        <div className="blog-card-foot">
+                          <span>{formatDate(p.date)}</span>
+                          <span className="blog-read-cta">
+                            Read
+                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                              <path d="M3 8h10M9 4l4 4-4 4" />
+                            </svg>
+                          </span>
+                        </div>
                       </div>
                     </Link>
                   </li>

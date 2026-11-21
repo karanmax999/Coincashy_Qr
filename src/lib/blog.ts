@@ -15,6 +15,15 @@ const CONTENT_DIR = path.join(process.cwd(), 'content', 'blog');
 export type BlogFaq = { q: string; a: string };
 export type BlogSource = { name: string; url: string };
 
+export type BlogCover = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  generated?: boolean;
+  credit?: string;
+};
+
 export type BlogPost = {
   slug: string;
   title: string;
@@ -28,6 +37,7 @@ export type BlogPost = {
   tags: string[];
   readingMinutes?: number;
   focusKeyword?: string;
+  cover?: BlogCover;
   coverAlt?: string;
   html: string;
   faq?: BlogFaq[];
@@ -35,6 +45,23 @@ export type BlogPost = {
   cta?: { label: string; href: string };
   status: 'published' | 'draft';
 };
+
+/** Category color mapping for accents & badges */
+export const CATEGORY_COLORS: Record<string, { accent: string; label: string }> = {
+  stablecoins: { accent: '#27A17F', label: '#E2B866' },
+  'business-payments': { accent: '#6B6BFF', label: '#6B6BFF' },
+  business: { accent: '#6B6BFF', label: '#6B6BFF' },
+  guides: { accent: '#3A78D0', label: '#3A78D0' },
+  compliance: { accent: '#E2B866', label: '#E2B866' },
+  otc: { accent: '#E3913A', label: '#E3913A' },
+  technology: { accent: '#9945FF', label: '#9945FF' },
+  wallets: { accent: '#00C49F', label: '#00C49F' },
+};
+
+export function getCategoryAccent(category: string): string {
+  const slug = categorySlug(category);
+  return CATEGORY_COLORS[slug]?.accent ?? '#0000FF';
+}
 
 const REQUIRED: (keyof BlogPost)[] = [
   'slug', 'title', 'description', 'excerpt', 'date', 'author', 'category', 'tags', 'html', 'status',
@@ -52,6 +79,26 @@ function readPost(file: string): BlogPost {
   if (`${post.slug}.json` !== file) {
     throw new Error(`content/blog/${file}: slug "${post.slug}" must match the file name`);
   }
+
+  // Cover image validation if present
+  if (post.cover) {
+    if (!post.cover.alt || typeof post.cover.alt !== 'string' || post.cover.alt.trim() === '') {
+      throw new Error(`content/blog/${file}: article "${post.slug}" has a cover but "alt" is missing or empty`);
+    }
+    const expectedPrefix = `/blog/${post.slug}/`;
+    if (!post.cover.src || typeof post.cover.src !== 'string' || !post.cover.src.startsWith(expectedPrefix)) {
+      throw new Error(
+        `content/blog/${file}: article "${post.slug}" cover src must start with "${expectedPrefix}", got "${post.cover?.src}"`
+      );
+    }
+    const publicPath = path.join(process.cwd(), 'public', post.cover.src.replace(/^\//, ''));
+    if (!fs.existsSync(publicPath)) {
+      throw new Error(
+        `content/blog/${file}: article "${post.slug}" cover file does not exist under /public at "${publicPath}"`
+      );
+    }
+  }
+
   return post;
 }
 
