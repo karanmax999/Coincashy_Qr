@@ -1,0 +1,15 @@
+{
+  "slug": "pipeline-test-2",
+  "title": "Pipeline Test 2 – Automation Check",
+  "description": "Internal test article used to confirm that an approved draft goes live on the Coincashy blog automatically. It will be removed after the test.",
+  "excerpt": "Internal automation check. This page will be removed shortly.",
+  "date": "2026-11-20",
+  "author": "Coincashy Editorial Team",
+  "reviewer": "Karan Bansal",
+  "category": "Guides",
+  "tags": [
+    "test"
+  ],
+  "html": "<p>This is an internal test of the Coincashy blog automation. If you can read this page, an approved draft was merged and deployed automatically.</p><p>This article will be removed after the test.</p>",
+  "status": "published"
+}
