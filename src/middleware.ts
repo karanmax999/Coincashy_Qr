@@ -34,8 +34,9 @@ export function middleware(request: NextRequest) {
       const [user, ...pwdParts] = decoded.split(':');
       const password = pwdParts.join(':');
 
-      const expectedUser = process.env.ADMIN_USER;
-      const expectedPassword = process.env.ADMIN_PASSWORD;
+      // Expected credentials from env, falling back to 'admin' / 'admin' for initial setup
+      const expectedUser = process.env.ADMIN_USER || 'admin';
+      const expectedPassword = process.env.ADMIN_PASSWORD || 'admin';
 
       // Ensure credentials are configured and match
       if (
