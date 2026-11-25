@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     const formattedMessage = messageLines.join('\n\n');
 
     const portalId = process.env.HUBSPOT_PORTAL_ID || '247718972';
-    const formId = process.env.HUBSPOT_FORM_ID || '1ad4e660-49c7-4823-b932-bb20c3872d76';
+    const formId = process.env.HUBSPOT_FORM_ID || '7106e4ce-0d13-4c1d-8958-77280cc48f9a';
     const region = (process.env.HUBSPOT_REGION || 'na2').toLowerCase();
 
     const baseHost = region === 'na2'
